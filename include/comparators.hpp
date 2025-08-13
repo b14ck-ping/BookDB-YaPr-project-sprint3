@@ -5,29 +5,29 @@
 namespace bookdb::comp {
 
 struct LessByAuthor {
-    bool operator()(const bookdb::Book &lhr, const bookdb::Book &rhr) const { return lhr._author < rhr._author; }
+    bool operator()(const bookdb::Book &lhs, const bookdb::Book &rhs) const { return lhs._author < rhs._author; }
 };
 
 struct LessByYear {
-    bool operator()(const bookdb::Book &lhr, const bookdb::Book &rhr) const { return lhr._year < rhr._year; }
+    bool operator()(const bookdb::Book &lhs, const bookdb::Book &rhs) const { return lhs._year < rhs._year; }
 };
 
 struct LessByTitle {
-    bool operator()(const bookdb::Book &lhr, const bookdb::Book &rhr) const { return lhr._title < rhr._title; }
+    bool operator()(const bookdb::Book &lhs, const bookdb::Book &rhs) const { return lhs._title < rhs._title; }
 };
 
 struct LessByRating {
-    bool operator()(const bookdb::Book &lhr, const bookdb::Book &rhr) const { return lhr._rating < rhr._rating; }
+    bool operator()(const bookdb::Book &lhs, const bookdb::Book &rhs) const { return lhs._rating < rhs._rating; }
 };
 
 struct LessByReadCount {
-    bool operator()(const bookdb::Book &lhr, const bookdb::Book &rhr) const {
-        return lhr._read_count < rhr._read_count;
+    bool operator()(const bookdb::Book &lhs, const bookdb::Book &rhs) const {
+        return lhs._read_count < rhs._read_count;
     }
 };
 
-struct LessByReadGenre {
-    bool operator()(const bookdb::Book &lhr, bookdb::Book &rhr) const { return lhr._genre < rhr._genre; }
+struct LessByGenre {
+    bool operator()(const bookdb::Book &lhs, bookdb::Book &rhs) const { return lhs._genre < rhs._genre; }
 };
 
 struct GreaterThanRating {

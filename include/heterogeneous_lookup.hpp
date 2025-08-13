@@ -5,7 +5,9 @@
 
 namespace bookdb {
 
-struct TransparentStringLess {};
+struct TransparentStringLess {
+    using is_trasparent = void;
+};
 
 struct TransparentStringEqual {};
 

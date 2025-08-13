@@ -15,6 +15,11 @@ constexpr Genre GenreFromString(std::string_view s) {
     return Genre::Unknown;
 }
 
+constexpr Genre GenreToString(std::string_view s) {
+    // Ваш код здесь
+    return Genre::Unknown;
+}
+
 struct Book {
     // string_view для экономии памяти, чтобы ссылаться на оригинальную строку, хранящуюся в другом контейнере
     std::string_view _author;
@@ -26,12 +31,13 @@ struct Book {
     int _read_count;
 
     // Ваш код для конструкторов здесь
-    constexpr Book(std::string autor, std::string title, int year, std::string genre, double rating, int read_count)
-        : _author(autor), _title(title), _year(year), _genre(GenreFromString(genre)), _rating(rating),
+    constexpr Book(std::string title, std::string_view author, int year, std::string genre, double rating,
+                   int read_count)
+        : _author(author), _title(title), _year(year), _genre(GenreFromString(genre)), _rating(rating),
           _read_count(read_count) {}
 
-    constexpr Book(std::string autor, std::string title, int year, Genre genre, double rating, int read_count)
-        : _author(autor), _title(title), _year(year), _genre(genre), _rating(rating), _read_count(read_count) {}
+    constexpr Book(std::string title, std::string_view author, int year, Genre genre, double rating, int read_count)
+        : _author(author), _title(title), _year(year), _genre(genre), _rating(rating), _read_count(read_count) {}
 };
 }  // namespace bookdb
 
