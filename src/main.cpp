@@ -45,24 +45,24 @@ int main() {
         // Author histogram
         auto histogram = buildAuthorHistogramFlat(db);
         std::print("Author histogram: {}", histogram);
+    */
+    // Ratings
+    auto genreRatings = calculateGenreRatings(db.begin(), db.end());
+    std::print("\n\nAverage ratings by genres: \n{}\n", genreRatings);
 
-        // Ratings
-        auto genreRatings = calculateGenreRatings(db.begin(), db.end());
-        std::print("\n\nAverage ratings by genres: {}\n", genreRatings);
-
-        auto avrRating = calculateAverageRating(db);
-        std::print("Average books rating in library: {}\n", avrRating);
-
+    auto avrRating = calculateAverageRating(db);
+    std::print("Average books rating in library: {}\n", avrRating);
+    /*
         // Filters
         auto filtered = filterBooks(db.begin(), db.end(), all_of(YearBetween(1900, 1999), RatingAbove(4.5)));
         std::print("\n\nBooks from the 20th century with rating ≥ 4.5:\n");
         std::for_each(filtered.cbegin(), filtered.cend(), [](const auto &v) { std::print("{}\n", v.get()); });
 
-        // Top 3 books
-        auto topBooks = getTopNBy(db, 3, comp::LessByRating{});
-        std::print("\n\nTop 3 books by rating:\n");
-        std::for_each(topBooks.cbegin(), topBooks.cend(), [](const auto &v) { std::print("{}\n", v.get()); });
-*/
+            // Top 3 books
+            auto topBooks = getTopNBy(db, 3, comp::LessByRating{});
+            std::print("\n\nTop 3 books by rating:\n");
+            std::for_each(topBooks.cbegin(), topBooks.cend(), [](const auto &v) { std::print("{}\n", v.get()); });
+         */
     auto orwellBookIt = std::find_if(db.begin(), db.end(), [](const auto &v) { return v._author == "George Orwell"; });
     if (orwellBookIt != db.end()) {
         std::print("\n\nTransparent lookup by authors. Found Orwell's book: {}\n", *orwellBookIt);

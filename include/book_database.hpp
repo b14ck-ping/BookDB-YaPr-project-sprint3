@@ -22,13 +22,18 @@ public:
     using iterator = BookContainer::iterator;
     static_assert(BookIterator<iterator>, "Iterator doesn't match to concept");
 
-    using const_iterator = BookContainer::iterator;
+    using const_iterator = BookContainer::const_iterator;
     static_assert(BookIterator<iterator>, "Const iterator doesn't match to concept");
 
     using AuthorContainer = std::set<std::string>;
     // Ваш код здесь
 
     BookDatabase() = default;
+    BookDatabase(std::initializer_list<Book> books) {
+        for (auto book : books) {
+            this->push_back(book);
+        }
+    }
 
     void Clear() {
         books_.clear();
@@ -37,7 +42,7 @@ public:
 
     // Standard container interface methods
     template <typename... Args>
-    void EmplaceBack(Args... args) {
+    Book &EmplaceBack(Args... args) {
         auto tuple_args = std::forward_as_tuple(std::forward<Args>(args)...);
         const std::string &autor_str = std::get<1>(tuple_args);
 
@@ -50,20 +55,34 @@ public:
         auto &&rating = std::get<4>(tuple_args);
         auto &&read_count = std::get<5>(tuple_args);
 
-        books_.emplace_back(title, author_view, year, genre, rating, read_count);
+        return books_.emplace_back(title, author_view, year, genre, rating, read_count);
     }
 
-    auto begin() { return books_.begin(); }
+    void push_back(Book &book) {
+        auto [it, _] = authors_.emplace(book._author);
+        book._author = *it;
+        books_.push_back(book);
+    }
 
-    auto end() { return books_.end(); }
+    void push_back(Book &&book) {
+        auto [it, _] = authors_.emplace(book._author);
+        book._author = *it;
+        books_.push_back(book);
+    }
+
+    iterator begin() { return books_.begin(); }
+    const_iterator cbegin() const { return books_.cbegin(); }
+
+    iterator end() { return books_.end(); }
+    const_iterator cend() const { return books_.cend(); }
 
     size_t size() const { return books_.size(); }
 
-    auto GetBooks() { return books_; }
-    auto GetBooks() const { return books_; }
+    BookContainer &GetBooks() { return books_; }
+    const BookContainer &GetBooks() const { return books_; }
 
-    auto GetAuthors() { return authors_; }
-    auto GetAuthors() const { return authors_; }
+    AuthorContainer &GetAuthors() { return authors_; }
+    const AuthorContainer &GetAuthors() const { return authors_; }
 
     // Ваш код здесь
 

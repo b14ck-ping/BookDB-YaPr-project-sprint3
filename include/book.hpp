@@ -15,9 +15,22 @@ constexpr Genre GenreFromString(std::string_view s) {
     return Genre::Unknown;
 }
 
-constexpr Genre GenreToString(std::string_view s) {
-    // Ваш код здесь
-    return Genre::Unknown;
+constexpr std::string GenreToString(Genre g) {
+    using bookdb::Genre;
+    switch (g) {
+    case Genre::Fiction:
+        return "Fiction";
+    case Genre::Mystery:
+        return "Mystery";
+    case Genre::NonFiction:
+        return "NonFiction";
+    case Genre::SciFi:
+        return "SciFi";
+    case Genre::Biography:
+        return "Biography";
+    default:
+        return "Unknown";
+    }
 }
 
 struct Book {

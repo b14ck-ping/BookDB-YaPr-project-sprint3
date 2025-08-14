@@ -30,12 +30,4 @@ struct LessByGenre {
     bool operator()(const bookdb::Book &lhs, bookdb::Book &rhs) const { return lhs._genre < rhs._genre; }
 };
 
-struct GreaterThanRating {
-    bool operator()(const bookdb::Book &b, double rr) const { return b._rating > rr; }
-};
-
-struct MatchGenre {
-    bool operator()(const bookdb::Book &b, const bookdb::Genre genre) const { return b._genre == genre; }
-};
-
 }  // namespace bookdb::comp
