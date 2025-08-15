@@ -1,13 +1,14 @@
 #pragma once
 
-#include <algorithm>
-#include <functional>
-#include <utility>
-
 #include "book.hpp"
 #include "book_database.hpp"
 #include "comparators.hpp"
 #include "concepts.hpp"
+#include <algorithm>
+#include <functional>
+#include <iterator>
+#include <random>
+#include <utility>
 
 namespace bookdb {
 
@@ -45,16 +46,27 @@ std::vector<std::reference_wrapper<Book>> filterBooks(Iterator first, Iterator l
     return out;
 }
 
-// template <BookContainerLike Container, BookPredicate predicate>
-// std::vector<std::reference_wrapper<const Book>> sampleRandomBooks() {}
+template <BookContainerLike Container>
+std::vector<std::reference_wrapper<const Book>> sampleRandomBooks(BookDatabase<Container> &db, size_t N) {
+    N = N < db.size() ? N : db.size();
+    std::vector<std::reference_wrapper<const Book>> out;
+    out.reserve(N);
+
+    std::sample(db.cbegin(), db.cend(), std::back_inserter(out), N, std::mt19937{std::random_device{}()});
+
+    return out;
+}
 
 template <BookContainerLike Container, BookComparator Comparator>
 std::vector<std::reference_wrapper<const Book>> getTopNBy(BookDatabase<Container> &db, size_t N, Comparator &&comp) {
+    N = N < db.size() ? N : db.size();
     std::vector<std::reference_wrapper<const Book>> out;
+    out.reserve(N);
 
-    std::partial_sort(db.begin(), db.end(), std::forward<Comparator>(comp));
+    std::partial_sort(db.begin(), db.begin() + N, db.end(),
+                      [&](const auto &a, const auto &b) { return !std::invoke(comp, a, b); });
 
-    std::for_each_n(db.rend(), db.rbegin(), N,
+    std::for_each_n(db.begin(), N,
                     [&out](const Book &book) { out.push_back(std::reference_wrapper<const Book>(book)); });
     return out;
 }

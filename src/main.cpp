@@ -63,6 +63,16 @@ int main() {
     std::print("\n\nTop 3 books by rating:\n");
     std::for_each(topBooks.cbegin(), topBooks.cend(), [](const auto &v) { std::print("{}\n", v.get()); });
 
+    // Top 3 books
+    auto topReadBooks = getTopNBy(db, 3, comp::LessByReadCount{});
+    std::print("\n\nTop 3 books by read count:\n");
+    std::for_each(topReadBooks.cbegin(), topReadBooks.cend(), [](const auto &v) { std::print("{}\n", v.get()); });
+
+    // 3 random books
+    auto randBooks = sampleRandomBooks(db, 3);
+    std::print("\n3 random books:\n");
+    std::for_each(randBooks.cbegin(), randBooks.cend(), [](const auto &v) { std::print("{}\n", v.get()); });
+
     auto orwellBookIt = std::find_if(db.begin(), db.end(), [](const auto &v) { return v._author == "George Orwell"; });
     if (orwellBookIt != db.end()) {
         std::print("\n\nTransparent lookup by authors. Found Orwell's book: {}\n", *orwellBookIt);
