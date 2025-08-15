@@ -19,6 +19,9 @@ namespace bookdb {
 // template <BookContainerLike T, typename Comparator = TransparentStringLess>
 // auto buildAuthorHistogramFlat(const BookDatabase<T> &cont, Comparator comp = {}) {}
 
+// template <BookContainerLike T, typename Comparator>
+// auto buildAuthorHistogram(const BookDatabase<T> &cont, Comparator comp = {}) {}
+
 template <BookContainerLike T>
 double calculateAverageRating(const BookDatabase<T> &db) {
     return std::accumulate(db.cbegin(), db.cend(), 0.0, [](double acc, const Book &b) { return acc += b._rating; }) /
@@ -47,9 +50,6 @@ std::flat_map<Genre, double> calculateGenreRatings(Iterator first, Iterator last
     return result;
 }
 
-// std::vector<std::reference_wrapper<const Book>> sampleRandomBooks() {}
-
-// std::vector<std::reference_wrapper<const Book>> getTopNBy() {}
 }  // namespace bookdb
 
 namespace std {

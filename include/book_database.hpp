@@ -23,7 +23,10 @@ public:
     static_assert(BookIterator<iterator>, "Iterator doesn't match to concept");
 
     using const_iterator = BookContainer::const_iterator;
-    static_assert(BookIterator<iterator>, "Const iterator doesn't match to concept");
+    static_assert(BookIterator<const_iterator>, "Const iterator doesn't match to concept");
+
+    using reverse_iterator = BookContainer::reverse_iterator;
+    static_assert(BookIterator<reverse_iterator>, "Reverse iterator doesn't match to concept");
 
     using AuthorContainer = std::set<std::string>;
     // Ваш код здесь
@@ -72,11 +75,13 @@ public:
 
     iterator begin() { return books_.begin(); }
     const_iterator cbegin() const { return books_.cbegin(); }
+    reverse_iterator rbegin() { return books_.rbegin(); }
 
     iterator end() { return books_.end(); }
     const_iterator cend() const { return books_.cend(); }
+    reverse_iterator rend() { return books_.rend(); }
 
-    size_t size() const { return books_.size(); }
+    size_t size() const { return std::distance(books_.begin(), books_.end()); }
 
     BookContainer &GetBooks() { return books_; }
     const BookContainer &GetBooks() const { return books_; }
