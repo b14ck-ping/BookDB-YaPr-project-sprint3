@@ -24,6 +24,10 @@ inline auto GenreIs(Genre genre) {
     return [genre](Book &book) { return book._genre == genre; };
 }
 
+inline auto AuthorIs(std::string author) {
+    return [author](Book &book) { return book._author == author; };
+}
+
 template <BookPredicate... Predicates>
 auto all_of(Predicates... preds) {
     return [... preds = std::move(preds)](Book &book) { return (preds(book) && ...); };

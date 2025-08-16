@@ -1,5 +1,7 @@
 #pragma once
 
+#include "book.hpp"
+#include "concepts.hpp"
 #include <initializer_list>
 #include <iterator>
 #include <print>
@@ -8,10 +10,6 @@
 #include <string_view>
 #include <utility>
 #include <vector>
-
-#include "book.hpp"
-#include "concepts.hpp"
-#include "heterogeneous_lookup.hpp"
 
 namespace bookdb {
 
@@ -88,8 +86,6 @@ public:
 
     AuthorContainer &GetAuthors() { return authors_; }
     const AuthorContainer &GetAuthors() const { return authors_; }
-
-    // Ваш код здесь
 
 private:
     BookContainer books_;

@@ -13,7 +13,6 @@ template <typename T>
 concept BookContainerLike = requires(T &t) {
     { t.emplace_back(std::declval<typename T::value_type>()) };
     { t.push_back(std::declval<typename T::value_type>()) };
-    { t.size() } -> std::same_as<size_t>;
     { t.begin() } -> std::same_as<typename T::iterator>;
     { t.end() } -> std::same_as<typename T::iterator>;
     { t.clear() };

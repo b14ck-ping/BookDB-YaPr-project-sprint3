@@ -48,10 +48,12 @@ int main() {
     */
     // Ratings
     auto genreRatings = calculateGenreRatings(db.begin(), db.end());
-    std::print("\n\nAverage ratings by genres: \n{}\n", genreRatings);
+    std::print("\n\nAverage ratings by genres: \n");
+    std::for_each(genreRatings.cbegin(), genreRatings.cend(),
+                  [](const auto v) { std::print("Genre: {}, Rating: {}\n", v.first, v.second); });
 
     auto avrRating = calculateAverageRating(db);
-    std::print("Average books rating in library: {}\n", avrRating);
+    std::print("\nAverage books rating in library: {}\n", avrRating);
 
     // Filters
     auto filtered = filterBooks(db.begin(), db.end(), all_of(YearBetween(1900, 1999), RatingAbove(4.5)));
@@ -73,7 +75,7 @@ int main() {
     std::print("\n3 random books:\n");
     std::for_each(randBooks.cbegin(), randBooks.cend(), [](const auto &v) { std::print("{}\n", v.get()); });
 
-    auto orwellBookIt = std::find_if(db.begin(), db.end(), [](const auto &v) { return v._author == "George Orwell"; });
+    auto orwellBookIt = std::find_if(db.begin(), db.end(), AuthorIs("George Orwell"));
     if (orwellBookIt != db.end()) {
         std::print("\n\nTransparent lookup by authors. Found Orwell's book: {}\n", *orwellBookIt);
     }
