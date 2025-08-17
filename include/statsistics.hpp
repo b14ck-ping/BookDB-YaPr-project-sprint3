@@ -28,7 +28,6 @@ double calculateAverageRating(const BookDatabase<T> &db) {
            db.size();
 }
 
-// template <BookIterator Iterator>
 std::flat_map<Genre, double> calculateGenreRatings(BookIterator auto first, BookIterator auto last) {
 
     std::unordered_map<Genre, std::pair<double, size_t>> buf;

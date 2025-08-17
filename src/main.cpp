@@ -10,15 +10,6 @@
 using namespace bookdb;
 
 int main() {
-    //
-    // Ниже приведён пример работы `BookDatabase`.
-    //
-    //     - Обратите внимание, что в этой функции реализованы основные возможности, охватывающие как обязательные, так
-    //     и опциональные требования,
-    //       которые не обязательны к реализации для сдачи работы.
-    //     - Не забудьте перед созданием коммита вызвать 'run_clang_format.sh' для форматирования кода
-    //
-
     // Create a book database
     BookDatabase<std::vector<Book>> db;
 
@@ -33,6 +24,7 @@ int main() {
     db.EmplaceBack("Jane Eyre", "Charlotte Brontë", 1847, Genre::Fiction, 4.6, 110);
     db.EmplaceBack("The Hobbit", "J.R.R. Tolkien", 1937, Genre::Fiction, 4.9, 203);
     db.EmplaceBack("Lord of the Flies", "William Golding", 1954, Genre::Fiction, 4.2, 89);
+    db.EmplaceBack("Lord of the Rings", "J.R.R. Tolkien", 1954, "Fiction", 4.9, 1000);
     std::print("Books: {}\n\n", db);
 
     // Sorts

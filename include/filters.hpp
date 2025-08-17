@@ -72,6 +72,7 @@ std::vector<std::reference_wrapper<const Book>> getTopNBy(BookDatabase<Container
 
     std::for_each_n(db.begin(), N,
                     [&out](const Book &book) { out.push_back(std::reference_wrapper<const Book>(book)); });
+
     return out;
 }
 

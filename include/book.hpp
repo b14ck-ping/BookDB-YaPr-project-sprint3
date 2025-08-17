@@ -10,9 +10,20 @@ enum class Genre { Fiction, NonFiction, SciFi, Biography, Mystery, Unknown };
 
 // Ваш код для constexpr преобразования строк в enum::Genre и наоборот здесь
 
-constexpr Genre GenreFromString(std::string_view s) {
-    // Ваш код здесь
-    return Genre::Unknown;
+constexpr Genre GenreFromString(const std::string_view &s) {
+    using bookdb::Genre;
+    if (s == std::string_view("Fiction"))
+        return Genre::Fiction;
+    else if (s == std::string_view("Mistery"))
+        return Genre::Fiction;
+    else if (s == std::string_view("NonFiction"))
+        return Genre::Fiction;
+    else if (s == std::string_view("SciFi"))
+        return Genre::Fiction;
+    else if (s == std::string_view("Biography"))
+        return Genre::Fiction;
+    else
+        return Genre::Unknown;
 }
 
 constexpr std::string GenreToString(Genre g) {
