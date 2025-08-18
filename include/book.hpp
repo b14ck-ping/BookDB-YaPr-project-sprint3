@@ -14,19 +14,19 @@ constexpr Genre GenreFromString(const std::string_view &s) {
     using bookdb::Genre;
     if (s == std::string_view("Fiction"))
         return Genre::Fiction;
-    else if (s == std::string_view("Mistery"))
-        return Genre::Fiction;
+    else if (s == std::string_view("Mystery"))
+        return Genre::Mystery;
     else if (s == std::string_view("NonFiction"))
-        return Genre::Fiction;
+        return Genre::NonFiction;
     else if (s == std::string_view("SciFi"))
-        return Genre::Fiction;
+        return Genre::SciFi;
     else if (s == std::string_view("Biography"))
-        return Genre::Fiction;
+        return Genre::Biography;
     else
         return Genre::Unknown;
 }
 
-constexpr std::string GenreToString(Genre g) {
+constexpr std::string_view GenreToString(const Genre g) {
     using bookdb::Genre;
     switch (g) {
     case Genre::Fiction:

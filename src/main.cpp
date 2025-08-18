@@ -5,7 +5,7 @@
 #include "book_database.hpp"
 #include "comparators.hpp"
 #include "filters.hpp"
-#include "statsistics.hpp"
+#include "statistics.hpp"
 
 using namespace bookdb;
 
@@ -33,19 +33,21 @@ int main() {
 
     std::sort(db.begin(), db.end(), comp::LessByRating{});
     std::print("Books sorted by popularity: {}\n\n==================\n", db);
-    /*
-        // Author histogram
-        auto histogram = buildAuthorHistogramFlat(db);
-        std::print("Author histogram: {}", histogram);
-    */
+
+    // Author histogram
+    auto histogram = buildAuthorHistogramFlat(db);
+    std::print("Author histogram:\n");
+    std::for_each(histogram.cbegin(), histogram.cend(),
+                  [](const auto v) { std::print("Author: {}, Books count: {}\n", v.first, v.second); });
+
     // Ratings
     auto genreRatings = calculateGenreRatings(db.begin(), db.end());
     std::print("\n\nAverage ratings by genres: \n");
     std::for_each(genreRatings.cbegin(), genreRatings.cend(),
-                  [](const auto v) { std::print("Genre: {}, Rating: {}\n", v.first, v.second); });
+                  [](const auto v) { std::print("Genre: {}, Rating: {:.2f}\n", v.first, v.second); });
 
     auto avrRating = calculateAverageRating(db);
-    std::print("\nAverage books rating in library: {}\n", avrRating);
+    std::print("\nAverage books rating in library: {:.2f}\n", avrRating);
 
     // Filters
     auto filtered = filterBooks(db.begin(), db.end(), all_of(YearBetween(1900, 1999), RatingAbove(4.5)));
