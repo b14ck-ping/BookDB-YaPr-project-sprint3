@@ -23,7 +23,7 @@ template <typename T>
 concept BookIterator = std::random_access_iterator<T> || std::contiguous_iterator<T>;
 
 template <typename S, typename I>
-concept BookSentinel = true;
+concept BookSentinel = std::sentinel_for<S, I>;
 
 template <typename P>
 concept BookPredicate = std::predicate<P, Book &>;
