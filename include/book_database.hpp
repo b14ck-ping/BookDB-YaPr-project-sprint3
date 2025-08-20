@@ -5,9 +5,9 @@
 #include <initializer_list>
 #include <iterator>
 #include <print>
-#include <set>
 #include <string>
 #include <string_view>
+#include <unordered_set>
 #include <utility>
 #include <vector>
 
@@ -30,7 +30,7 @@ public:
     using reference = BookContainer::reference;
     using const_reference = BookContainer::const_reference;
 
-    using AuthorContainer = std::set<std::string>;
+    using AuthorContainer = std::unordered_set<std::string>;
     // Ваш код здесь
 
     BookDatabase() = default;
@@ -54,11 +54,10 @@ public:
         return newBook;
     }
 
-    void push_back(const Book &book) {
+    void push_back(Book book) {
         auto [it, _] = authors_.emplace(book._author);
+        book._author = *it;
         books_.push_back(book);
-        auto _book = books_.back();
-        _book._author = *it;
     }
 
     void push_back(Book &&book) {
