@@ -11,17 +11,17 @@ struct TransparentStringLess {
 
     bool operator()(const std::string &a, const std::string &b) const { return a < b; }
 
-    bool operator()(const std::string &a, const std::string_view b) const { return a < b; }
+    bool operator()(const std::string &a, std::string_view b) const { return a < b; }
 
-    bool operator()(const std::string_view a, const std::string &b) const { return a < b; }
+    bool operator()(std::string_view a, const std::string &b) const { return a < b; }
 
-    bool operator()(const std::string_view a, const std::string_view &b) const { return a < b; }
+    bool operator()(std::string_view a, std::string_view b) const { return a < b; }
 
-    bool operator()(const std::string_view a, const char *b) const { return a < b; }
+    bool operator()(std::string_view a, const char *b) const { return a < b; }
 
-    bool operator()(const std::string a, const char *b) const { return a < b; }
+    bool operator()(const std::string &a, const char *b) const { return a < b; }
 
-    bool operator()(const char *a, const std::string_view &b) const { return a < b; }
+    bool operator()(const char *a, std::string_view b) const { return a < b; }
 
     bool operator()(const char *a, const std::string &b) const { return a < b; }
 };
@@ -35,15 +35,15 @@ struct TransparentStringEqual {
 
     bool operator()(std::string_view a, const std::string &b) const { return a == b; }
 
-    bool operator()(std::string_view a, const std::string_view &b) const { return a == b; }
+    bool operator()(std::string_view a, std::string_view b) const { return a == b; }
 
     bool operator()(std::string_view a, const char *b) const { return a == b; }
 
-    bool operator()(std::string a, const char *b) const { return a == b; }
+    bool operator()(const std::string &a, const char *b) const { return a == b; }
 
-    bool operator()(const char *a, std::string_view &b) const { return a == b; }
+    bool operator()(const char *a, std::string_view b) const { return a == b; }
 
-    bool operator()(const char *a, std::string &b) const { return a == b; }
+    bool operator()(const char *a, const std::string &b) const { return a == b; }
 };
 
 struct TransparentStringHash {

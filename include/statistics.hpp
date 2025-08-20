@@ -17,19 +17,16 @@ namespace bookdb {
 
 template <BookContainerLike T, typename Comparator = TransparentStringLess>
 auto buildAuthorHistogramFlat(const BookDatabase<T> &cont, Comparator comp = {}) {
-    const auto &authors = cont.GetAuthors();
     const auto &books = cont.GetBooks();
 
     std::flat_map<std::string_view, size_t, Comparator> temp_map(comp);
-    for (const auto &author : authors) {
-        temp_map.emplace(author, 0);
-    }
-
     for (const auto &book : books) {
         std::string_view author_view = book._author;
         auto it = temp_map.find(author_view);
         if (it != temp_map.end()) {
             it->second++;
+        } else {
+            temp_map.emplace(author_view, 1);
         }
     }
 
@@ -38,7 +35,10 @@ auto buildAuthorHistogramFlat(const BookDatabase<T> &cont, Comparator comp = {})
 
 template <BookContainerLike T>
 double calculateAverageRating(const BookDatabase<T> &db) {
-    return std::accumulate(db.cbegin(), db.cend(), 0.0, [](double acc, const Book &b) { return acc += b._rating; }) /
+    if (db.size() == 0)
+        return 0.0;
+    return std::transform_reduce(db.cbegin(), db.cend(), 0.0, std::plus{},
+                                 [](const Book &b) -> double { return b._rating; }) /
            db.size();
 }
 
@@ -64,8 +64,7 @@ std::flat_map<Genre, double> calculateGenreRatings(BookIterator auto first, Book
 }
 
 template <BookContainerLike Container, BookComparator Comparator>
-static std::vector<std::reference_wrapper<const Book>> getTopNBy(BookDatabase<Container> &db, size_t N,
-                                                                 Comparator &&comp) {
+std::vector<std::reference_wrapper<const Book>> getTopNBy(BookDatabase<Container> &db, size_t N, Comparator &&comp) {
     N = N < db.size() ? N : db.size();
     std::vector<std::reference_wrapper<const Book>> out;
     out.reserve(N);
@@ -73,14 +72,13 @@ static std::vector<std::reference_wrapper<const Book>> getTopNBy(BookDatabase<Co
     std::partial_sort(db.begin(), db.begin() + N, db.end(),
                       [&](const auto &a, const auto &b) { return !std::invoke(comp, a, b); });
 
-    std::for_each_n(db.begin(), N,
-                    [&out](const Book &book) { out.push_back(std::reference_wrapper<const Book>(book)); });
+    out.insert(out.end(), db.begin(), db.begin() + N);
 
     return out;
 }
 
 template <BookContainerLike Container>
-static std::vector<std::reference_wrapper<const Book>> sampleRandomBooks(BookDatabase<Container> &db, size_t N) {
+std::vector<std::reference_wrapper<const Book>> sampleRandomBooks(BookDatabase<Container> &db, size_t N) {
     N = N < db.size() ? N : db.size();
     std::vector<std::reference_wrapper<const Book>> out;
     out.reserve(N);

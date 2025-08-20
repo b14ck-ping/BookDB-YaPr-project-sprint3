@@ -26,12 +26,16 @@ public:
     using reverse_iterator = BookContainer::reverse_iterator;
     static_assert(BookIterator<reverse_iterator>, "Reverse iterator doesn't match to concept");
 
+    using value_type = BookContainer::value_type;
+    using reference = BookContainer::reference;
+    using const_reference = BookContainer::const_reference;
+
     using AuthorContainer = std::set<std::string>;
     // Ваш код здесь
 
     BookDatabase() = default;
     BookDatabase(std::initializer_list<Book> books) {
-        for (auto book : books) {
+        for (const auto &book : books) {
             this->push_back(book);
         }
     }
@@ -44,31 +48,23 @@ public:
     // Standard container interface methods
     template <typename... Args>
     Book &EmplaceBack(Args... args) {
-        auto tuple_args = std::forward_as_tuple(std::forward<Args>(args)...);
-        const std::string &autor_str = std::get<1>(tuple_args);
-
-        auto [it, _] = authors_.emplace(autor_str);
-
-        auto &&title = std::get<0>(tuple_args);
-        std::string_view author_view = *it;
-        auto &&year = std::get<2>(tuple_args);
-        auto &&genre = std::get<3>(tuple_args);
-        auto &&rating = std::get<4>(tuple_args);
-        auto &&read_count = std::get<5>(tuple_args);
-
-        return books_.emplace_back(title, author_view, year, genre, rating, read_count);
+        auto &newBook = books_.emplace_back(std::forward<Args>(args)...);
+        auto [it, _] = authors_.emplace(newBook._author);
+        newBook._author = *it;
+        return newBook;
     }
 
-    void push_back(Book &book) {
+    void push_back(const Book &book) {
         auto [it, _] = authors_.emplace(book._author);
-        book._author = *it;
         books_.push_back(book);
+        auto _book = books_.back();
+        _book._author = *it;
     }
 
     void push_back(Book &&book) {
         auto [it, _] = authors_.emplace(book._author);
         book._author = *it;
-        books_.push_back(book);
+        books_.push_back(std::move(book));
     }
 
     iterator begin() { return books_.begin(); }

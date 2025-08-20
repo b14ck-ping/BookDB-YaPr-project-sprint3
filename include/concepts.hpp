@@ -11,6 +11,7 @@ namespace bookdb {
 
 template <typename T>
 concept BookContainerLike = requires(T &t) {
+    { std::same_as<typename T::value_type, Book> };
     { t.emplace_back(std::declval<typename T::value_type>()) };
     { t.push_back(std::declval<typename T::value_type>()) };
     { t.begin() } -> std::same_as<typename T::iterator>;

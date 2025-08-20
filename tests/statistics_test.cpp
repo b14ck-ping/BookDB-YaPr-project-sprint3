@@ -1,7 +1,7 @@
 #include "book_database.hpp"
 #include "statistics.hpp"
-#
 #include <gtest/gtest.h>
+#include <unordered_set>
 
 using namespace bookdb;
 
@@ -31,7 +31,7 @@ TEST(StatisticsTest, AverageRating) {
     EXPECT_DOUBLE_EQ(avg, 4.24);
 
     BookDatabase<> empty_db;
-    EXPECT_TRUE(std::isnan(calculateAverageRating(empty_db)));
+    EXPECT_DOUBLE_EQ(calculateAverageRating(empty_db), 0.0);
 }
 
 TEST(StatisticsTest, GenreRatings) {
@@ -76,7 +76,7 @@ TEST(StatisticsTest, RandomSample) {
     }
 
     // Sample books unique check
-    std::set<const Book *> unique_books;
+    std::unordered_set<const Book *> unique_books;
     for (const auto &book_ref : random_sample) {
         unique_books.insert(&book_ref.get());
     }
@@ -92,7 +92,7 @@ TEST(StatisticsTest, EmptyDatabase) {
     auto hist = buildAuthorHistogramFlat(empty_db);
     EXPECT_TRUE(hist.empty());
 
-    EXPECT_TRUE(std::isnan(calculateAverageRating(empty_db)));
+    EXPECT_DOUBLE_EQ(calculateAverageRating(empty_db), 0.0);
 
     auto genre_ratings = calculateGenreRatings(empty_db.begin(), empty_db.end());
     EXPECT_TRUE(genre_ratings.empty());
