@@ -1,25 +1,34 @@
 #pragma once
 
 #include <concepts>
+#include <cstddef>
 #include <iterator>
+#include <type_traits>
 
 #include "book.hpp"
 
 namespace bookdb {
 
 template <typename T>
-concept BookContainerLike = true;
+concept BookContainerLike = requires(T &t) {
+    { std::same_as<typename T::value_type, Book> };
+    { t.emplace_back(std::declval<typename T::value_type>()) };
+    { t.push_back(std::declval<typename T::value_type>()) };
+    { t.begin() } -> std::same_as<typename T::iterator>;
+    { t.end() } -> std::same_as<typename T::iterator>;
+    { t.clear() };
+};
 
 template <typename T>
-concept BookIterator = true;
+concept BookIterator = std::random_access_iterator<T> || std::contiguous_iterator<T>;
 
 template <typename S, typename I>
-concept BookSentinel = true;
+concept BookSentinel = std::sentinel_for<S, I>;
 
 template <typename P>
-concept BookPredicate = true;
+concept BookPredicate = std::predicate<P, Book &>;
 
 template <typename C>
-concept BookComparator = true;
-
+concept BookComparator = std::invocable<C, const Book &, const Book &> &&
+                         std::convertible_to<std::invoke_result_t<C, const Book &, const Book &>, bool>;
 }  // namespace bookdb
